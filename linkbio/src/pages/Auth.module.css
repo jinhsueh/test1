@@ -1,0 +1,82 @@
+.page {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+.orb1 {
+  position: fixed; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,111,232,0.18) 0%, transparent 70%);
+  top: -150px; right: -150px; pointer-events: none;
+}
+.orb2 {
+  position: fixed; width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,158,255,0.10) 0%, transparent 70%);
+  bottom: -80px; left: -80px; pointer-events: none;
+}
+.card {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 420px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(59,158,255,0.25);
+  border-radius: 20px;
+  padding: 40px 36px;
+  box-shadow: 0 24px 64px rgba(27,111,232,0.2);
+  animation: fadeUp 0.4s ease both;
+}
+.logo {
+  font-size: 1.1rem; font-weight: 800;
+  background: linear-gradient(90deg, #1B6FE8, #3B9EFF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 24px; cursor: pointer;
+}
+.title { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; }
+.form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 0.8rem; color: #94A3B8; }
+.field input {
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(59,158,255,0.25);
+  border-radius: 10px;
+  color: #fff; font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus { border-color: #3B9EFF; }
+.handleWrap { display: flex; align-items: center; }
+.handlePrefix {
+  padding: 10px 12px;
+  background: rgba(59,158,255,0.1);
+  border: 1px solid rgba(59,158,255,0.25);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  font-size: 0.85rem; color: #3B9EFF;
+  white-space: nowrap;
+}
+.handleWrap input { border-radius: 0 10px 10px 0; flex: 1; }
+.error {
+  padding: 10px 14px;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  font-size: 0.82rem; color: #FCA5A5;
+}
+.btnSubmit {
+  padding: 12px;
+  background: linear-gradient(90deg, #1B6FE8, #3B9EFF);
+  border-radius: 100px;
+  color: #fff; font-size: 0.95rem; font-weight: 700;
+  transition: opacity 0.2s;
+}
+.btnSubmit:disabled { opacity: 0.6; }
+.btnSubmit:not(:disabled):hover { opacity: 0.88; }
+.switchMode {
+  margin-top: 20px; text-align: center;
+  font-size: 0.85rem; color: #94A3B8;
+}
+.switchMode button { color: #3B9EFF; font-weight: 600; margin-left: 4px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

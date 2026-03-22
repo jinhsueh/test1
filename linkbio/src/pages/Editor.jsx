@@ -1,6 +1,8 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import styles from './Editor.module.css'
+import { api } from '../lib/api'
+import { useAuth } from '../contexts/AuthContext'
 
 const BLOCK_TYPES = [
   { type: 'link',    label: '連結按鈕', icon: '🔗' },
@@ -34,6 +36,12 @@ function makeBlock(type) {
 
 export default function Editor() {
   const nav = useNavigate()
+  const { id: pageId } = useParams()
+  const { user } = useAuth()
+  const [pageDbId, setPageDbId] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [saveMsg, setSaveMsg] = useState('')
+
   const [profile, setProfile] = useState({
     name: '你的名字',
     handle: 'mypage',
@@ -48,6 +56,17 @@ export default function Editor() {
   const [selected, setSelected] = useState(null)
   const [theme, setTheme] = useState(THEMES[0])
   const [dragging, setDragging] = useState(null)
+
+  // load page from API if id given
+  useEffect(() => {
+    if (!pageId) return
+    api.getPage(pageId).then(page => {
+      setPageDbId(page.id)
+      setProfile({ name: page.name, handle: page.handle, bio: page.bio, emoji: page.emoji })
+      setTheme(THEMES.find(t => t.id === page.theme) || THEMES[0])
+      setBlocks(page.blocks.map(b => ({ id: newId(), type: b.type, ...b.data })))
+    }).catch(() => nav('/dashboard'))
+  }, [pageId])
 
   /* ── block helpers ── */
   const addBlock = (type) => {
@@ -107,7 +126,35 @@ export default function Editor() {
           <button className={styles.btnPreview} onClick={() => nav(`/p/${profile.handle}`)}>
             預覽頁面 ↗
           </button>
-          <button className={styles.btnSave}>儲存發佈</button>
+          <button className={styles.btnSave} disabled={saving} onClick={async () => {
+            if (!user) { nav('/auth'); return }
+            setSaving(true)
+            try {
+              const payload = {
+                name: profile.name, handle: profile.handle,
+                bio: profile.bio, emoji: profile.emoji,
+                theme: theme.id,
+                blocks: blocks.map((b, i) => {
+                  const { id: _id, type, ...rest } = b
+                  return { type, order: i, data: rest }
+                }),
+              }
+              if (pageDbId) {
+                await api.updatePage(pageDbId, payload)
+              } else {
+                const page = await api.createPage(payload)
+                setPageDbId(page.id)
+              }
+              setSaveMsg('已儲存 ✓')
+              setTimeout(() => setSaveMsg(''), 2000)
+            } catch (e) {
+              setSaveMsg('儲存失敗：' + e.message)
+            } finally {
+              setSaving(false)
+            }
+          }}>
+            {saving ? '儲存中…' : saveMsg || '儲存發佈'}
+          </button>
         </div>
       </div>
 

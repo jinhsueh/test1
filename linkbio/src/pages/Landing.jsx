@@ -70,7 +70,7 @@ export default function Landing() {
           <a href="#pricing">方案</a>
           <a href="#demo">範例</a>
         </div>
-        <button className={styles.navCta} onClick={() => nav('/editor')}>
+        <button className={styles.navCta} onClick={() => nav('/auth')}>
           免費建立頁面
         </button>
       </nav>
@@ -90,7 +90,7 @@ export default function Landing() {
           社群、作品、商品，以及一切重要資訊。
         </p>
         <div className={styles.heroActions}>
-          <button className={styles.btnPrimary} onClick={() => nav('/editor')}>
+          <button className={styles.btnPrimary} onClick={() => nav('/auth')}>
             免費開始使用 →
           </button>
           <button className={styles.btnGhost} onClick={() => nav('/p/crescendo')}>
@@ -171,7 +171,7 @@ export default function Landing() {
               </ul>
               <button
                 className={p.highlight ? styles.btnPrimary : styles.btnOutline}
-                onClick={() => nav('/editor')}
+                onClick={() => nav('/auth')}
               >
                 {p.cta}
               </button>
@@ -186,7 +186,7 @@ export default function Landing() {
           <div className={styles.pelican2}>🐦</div>
           <h2 className={styles.ctaTitle}>準備好了嗎？</h2>
           <p className={styles.ctaSub}>加入 10,000+ 創作者與品牌，立即打造你的連結頁面</p>
-          <button className={styles.btnPrimary} onClick={() => nav('/editor')}>
+          <button className={styles.btnPrimary} onClick={() => nav('/auth')}>
             免費建立我的頁面
           </button>
         </div>

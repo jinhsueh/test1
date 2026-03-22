@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import styles from './Preview.module.css'
+import { api } from '../lib/api'
 
 const DEMO_PAGES = {
   crescendo: {
@@ -67,10 +69,58 @@ const DEMO_PAGES = {
   },
 }
 
+const THEMES_MAP = {
+  ocean:    { bg: 'linear-gradient(160deg,#0A1628 0%,#0D2B55 60%,#0F3460 100%)', accent: '#3B9EFF' },
+  midnight: { bg: 'linear-gradient(160deg,#0D0D1A 0%,#1A1040 60%,#2D1B69 100%)', accent: '#A78BFA' },
+  forest:   { bg: 'linear-gradient(160deg,#071A0E 0%,#0D3320 60%,#1A5C3A 100%)', accent: '#34D399' },
+  sunset:   { bg: 'linear-gradient(160deg,#1A0A00 0%,#3D1A00 60%,#6B2D00 100%)', accent: '#FB923C' },
+}
+
+const ICON_GRADS = [
+  ['#1B6FE8','#3B9EFF'], ['#0D2B55','#1B6FE8'], ['#3B9EFF','#7EC8FF'],
+  ['#0A3D8F','#1B6FE8'], ['#1B6FE8','#0D2B55'],
+]
+
+function adaptBlocks(blocks) {
+  return blocks.map((b, i) => {
+    if (b.type === 'link') return {
+      ...b, icon: b.data?.icon || '🔗',
+      title: b.data?.title || '連結', desc: b.data?.desc || '',
+      grad: ICON_GRADS[i % ICON_GRADS.length],
+    }
+    if (b.type === 'header') return { ...b, text: b.data?.text || '標題' }
+    if (b.type === 'socials') return { ...b, platforms: b.data?.platforms || [] }
+    return b
+  })
+}
+
 export default function Preview() {
   const { handle } = useParams()
   const nav = useNavigate()
-  const page = DEMO_PAGES[handle] || DEMO_PAGES.crescendo
+  const [page, setPage] = useState(DEMO_PAGES[handle] || null)
+  const [notFound, setNotFound] = useState(false)
+
+  useEffect(() => {
+    if (DEMO_PAGES[handle]) return   // use built-in demo
+    api.getPublicPage(handle)
+      .then(p => setPage({
+        name: p.name, handle: p.handle, bio: p.bio, emoji: p.emoji,
+        theme: THEMES_MAP[p.theme] || THEMES_MAP.ocean,
+        socials: (p.socials || []).map(s => s[0]),
+        blocks: adaptBlocks(p.blocks),
+      }))
+      .catch(() => setNotFound(true))
+  }, [handle])
+
+  if (notFound) return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+      <div style={{ fontSize: '3rem' }}>🔍</div>
+      <p style={{ color: '#94A3B8' }}>找不到此頁面</p>
+      <button onClick={() => nav('/')} style={{ color: '#3B9EFF' }}>← 回首頁</button>
+    </div>
+  )
+  if (!page) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>載入中…</div>
+
   const { theme } = page
 
   return (
