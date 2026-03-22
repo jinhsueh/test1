@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的連結頁 | CrescLab Style</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue-deep:    #0A1628;
+      --blue-ocean:   #0D2B55;
+      --blue-primary: #1B6FE8;
+      --blue-bright:  #3B9EFF;
+      --blue-light:   #7EC8FF;
+      --white:        #FFFFFF;
+      --gray-light:   #CBD5E1;
+      --gray-muted:   #94A3B8;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--blue-deep) 0%, var(--blue-ocean) 60%, #0F3460 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    /* ── 背景裝飾圓圈 ── */
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(27,111,232,0.18) 0%, transparent 70%);
+      top: -150px;
+      right: -150px;
+    }
+    body::after {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(59,158,255,0.12) 0%, transparent 70%);
+      bottom: -100px;
+      left: -100px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ── 頭像 & 基本資訊 ── */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .avatar-wrap {
+      position: relative;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      box-shadow: 0 0 0 3px rgba(59,158,255,0.4), 0 8px 32px rgba(27,111,232,0.5);
+    }
+
+    /* 鵜鶘 badge */
+    .pelican-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(135deg, var(--blue-primary), var(--blue-bright));
+      border-radius: 50%;
+      border: 2px solid var(--blue-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    .profile-handle {
+      font-size: 0.875rem;
+      color: var(--blue-bright);
+      font-weight: 500;
+    }
+
+    .profile-bio {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      text-align: center;
+      line-height: 1.6;
+      max-width: 340px;
+    }
+
+    /* ── 社群 icon 列 ── */
+    .socials {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(59,158,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: var(--gray-light);
+    }
+
+    .social-btn:hover {
+      background: rgba(59,158,255,0.2);
+      border-color: var(--blue-bright);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(27,111,232,0.4);
+    }
+
+    /* ── 區塊標題 ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--blue-bright);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+
+    /* ── 連結按鈕 ── */
+    .links-section {
+      margin-bottom: 24px;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 15px 20px;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(59,158,255,0.2);
+      border-radius: 14px;
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(27,111,232,0.0) 0%, rgba(59,158,255,0.08) 100%);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .link-btn:hover {
+      border-color: rgba(59,158,255,0.6);
+      background: rgba(255,255,255,0.10);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,111,232,0.3);
+    }
+
+    .link-btn:hover::before {
+      opacity: 1;
+    }
+
+    .link-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .link-icon.gradient-1 { background: linear-gradient(135deg, #1B6FE8, #3B9EFF); }
+    .link-icon.gradient-2 { background: linear-gradient(135deg, #0D2B55, #1B6FE8); }
+    .link-icon.gradient-3 { background: linear-gradient(135deg, #3B9EFF, #7EC8FF); }
+    .link-icon.gradient-4 { background: linear-gradient(135deg, #0A3D8F, #1B6FE8); }
+    .link-icon.gradient-5 { background: linear-gradient(135deg, #1B6FE8, #0D2B55); }
+
+    .link-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .link-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .link-desc {
+      font-size: 0.78rem;
+      color: var(--gray-muted);
+      margin-top: 2px;
+    }
+
+    .link-arrow {
+      color: var(--gray-muted);
+      font-size: 0.9rem;
+      transition: transform 0.25s;
+    }
+
+    .link-btn:hover .link-arrow {
+      transform: translateX(4px);
+      color: var(--blue-bright);
+    }
+
+    /* ── 精選卡片區 ── */
+    .cards-section {
+      margin-bottom: 24px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(59,158,255,0.2);
+      border-radius: 14px;
+      padding: 18px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .card:hover {
+      border-color: rgba(59,158,255,0.5);
+      background: rgba(27,111,232,0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,111,232,0.3);
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: 0.75rem;
+      color: var(--gray-muted);
+    }
+
+    /* ── 底部 branding ── */
+    .footer {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--gray-muted);
+    }
+
+    .footer-logo span {
+      background: linear-gradient(90deg, var(--blue-primary), var(--blue-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: rgba(148,163,184,0.5);
+    }
+
+    /* ── 漸層分隔線 ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,158,255,0.3), transparent);
+      margin: 20px 0;
+    }
+
+    /* ── 動畫 ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .container > * {
+      animation: fadeUp 0.5s ease both;
+    }
+    .container > *:nth-child(1) { animation-delay: 0.05s; }
+    .container > *:nth-child(2) { animation-delay: 0.12s; }
+    .container > *:nth-child(3) { animation-delay: 0.20s; }
+    .container > *:nth-child(4) { animation-delay: 0.28s; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- 個人資訊 -->
+    <div class="profile">
+      <div class="avatar-wrap">
+        <div class="avatar">CL</div>
+        <div class="pelican-badge">🐦</div>
+      </div>
+      <div class="profile-name">漸強實驗室</div>
+      <div class="profile-handle">@crescendo.lab</div>
+      <div class="profile-bio">
+        亞洲領先 AI 對話雲平台<br>
+        讓互動數據驅動品牌成長 🚀
+      </div>
+      <div class="socials">
+        <a href="#" class="social-btn" title="Instagram">📸</a>
+        <a href="#" class="social-btn" title="LinkedIn">💼</a>
+        <a href="#" class="social-btn" title="Facebook">📘</a>
+        <a href="#" class="social-btn" title="YouTube">▶️</a>
+        <a href="#" class="social-btn" title="LINE">💬</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 主要連結 -->
+    <div class="links-section">
+      <div class="section-label">主要連結</div>
+
+      <a href="#" class="link-btn">
+        <div class="link-icon gradient-1">🌐</div>
+        <div class="link-text">
+          <div class="link-title">官方網站</div>
+          <div class="link-desc">cresclab.com — 了解更多產品</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+
+      <a href="#" class="link-btn">
+        <div class="link-icon gradient-2">💡</div>
+        <div class="link-text">
+          <div class="link-title">MAAC 行銷自動化</div>
+          <div class="link-desc">LINE 行銷一站式平台</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+
+      <a href="#" class="link-btn">
+        <div class="link-icon gradient-3">🤖</div>
+        <div class="link-text">
+          <div class="link-title">CAAC 對話式 AI</div>
+          <div class="link-desc">智慧客服與銷售自動化</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+
+      <a href="#" class="link-btn">
+        <div class="link-icon gradient-4">📖</div>
+        <div class="link-text">
+          <div class="link-title">部落格 & 資源</div>
+          <div class="link-desc">行銷趨勢、教學文章</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+
+      <a href="#" class="link-btn">
+        <div class="link-icon gradient-5">🎙️</div>
+        <div class="link-text">
+          <div class="link-title">Podcast</div>
+          <div class="link-desc">數位行銷知識分享</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+    </div>
+
+    <!-- 精選卡片 -->
+    <div class="cards-section">
+      <div class="section-label">精選內容</div>
+      <div class="cards-grid">
+        <a href="#" class="card">
+          <span class="card-icon">📊</span>
+          <div class="card-title">2025 行銷報告</div>
+          <div class="card-sub">立即下載</div>
+        </a>
+        <a href="#" class="card">
+          <span class="card-icon">🏆</span>
+          <div class="card-title">客戶案例</div>
+          <div class="card-sub">700+ 品牌信賴</div>
+        </a>
+        <a href="#" class="card">
+          <span class="card-icon">🎓</span>
+          <div class="card-title">免費課程</div>
+          <div class="card-sub">LINE 行銷入門</div>
+        </a>
+        <a href="#" class="card">
+          <span class="card-icon">💬</span>
+          <div class="card-title">聯絡我們</div>
+          <div class="card-sub">預約 Demo</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <div class="footer">
+      <div class="footer-logo">
+        🐦 Powered by <span>CrescLab Style</span>
+      </div>
+      <div class="footer-copy">© 2025 漸強實驗室 Crescendo Lab</div>
+    </div>
+
+  </div>
+</body>
+</html>
